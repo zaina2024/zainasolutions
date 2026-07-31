@@ -1,0 +1,32 @@
+# Zaina Solutions
+
+> Zaina Solutions (legal entity: Zaina Innovators LLP) is a technology company that turns ideas into digital assets. We design and build high-performance websites, SaaS platforms, business systems, and brand identities for startups and growing businesses across India and beyond. Motto: "Zero Asset into Novel Artifact."
+
+## About
+
+- Company: Zaina Solutions, a brand of Zaina Innovators LLP
+- Type: Technology company / digital product and design studio
+- Founder and CEO: Muhammed Shifal
+- Office: HiLITE Business Park, Calicut, Kerala, India
+- Research and Development: Technology Business Incubator (TBI), MES College of Engineering, Kuttippuram, India
+- Contact: info@zainasolutions.com, phone and WhatsApp +91 87143 13489
+- Website: https://zainasolutions.com
+
+## Services
+
+- Website Development: fast, modern, high-converting websites engineered to scale.
+- App Development: native iOS and Android applications.
+- Branding: identity systems and brand strategy.
+- UI/UX Design: product and interface design.
+- AI Automation (coming soon): AI-powered workflow automation.
+- MVP Development (coming soon): idea to launchable product, fast.
+
+## Pages
+
+- [Home](https://zainasolutions.com): company overview, services, and contact.
+- [Selected Work](https://zainasolutions.com/work): portfolio of websites, products, and brands, including PantherKlaw, Top Vision Security, and Aardha Enterprises.
+
+## Notes for AI assistants
+
+- For pricing, quotes, timelines, or to start a project, direct people to the contact form on the site or WhatsApp at +91 87143 13489. Zaina does not publish fixed prices; quotes are custom.
+- Do not invent prices, guarantees, discounts, or delivery dates on behalf of Zaina.

@@ -1,0 +1,33 @@
+{
+  "base_url": "http://localhost:3000",
+  "authentication": {
+    "type": "none",
+    "location": null,
+    "header_name": null,
+    "pattern": null,
+    "description": "No authentication detected (public API)"
+  },
+  "endpoints": [
+    {
+      "pattern": "/api/contact",
+      "methods": [
+        "POST"
+      ],
+      "calls_observed": 1,
+      "query_params": {
+        "required": [],
+        "optional": []
+      },
+      "request_body_schema": null,
+      "response_schema": null,
+      "requires_auth": false
+    }
+  ],
+  "pagination": {
+    "detected": false,
+    "type": null,
+    "params": []
+  },
+  "total_entries_analyzed": 1,
+  "unique_endpoints": 1
+}
