@@ -41,10 +41,11 @@ const STUDENTS: Item[] = [
 const ROTATE_MS = 2600;
 const PARTICLE_COUNT = 3;
 
-// Shared viewBox: 0-1000 wide, 0-220 tall. Logo sits at cx=500,cy=110.
-// Both arcs are mirror images of one another for visual symmetry.
-const LEFT_PATH = "M 95,110 C 240,110 260,70 400,70 C 460,70 470,110 500,110";
-const RIGHT_PATH = "M 500,110 C 530,110 540,150 600,150 C 740,150 760,110 905,110";
+// Shared viewBox: 0-1000 wide, 0-200 tall, path row centered at y=100
+// (matches the icon row's own vertical center, see the `.icon-row` div below).
+// A single gentle dip on each side keeps both arcs mirror images of one another.
+const LEFT_PATH = "M 30,100 C 160,100 190,60 320,60 C 400,60 420,100 470,100";
+const RIGHT_PATH = "M 530,100 C 580,100 600,140 680,140 C 810,140 840,100 970,100";
 
 function useCycle(length: number, ms: number, paused: boolean) {
   const [index, setIndex] = useState(0);
@@ -56,28 +57,31 @@ function useCycle(length: number, ms: number, paused: boolean) {
   return index;
 }
 
-function IconStack({
+function Heading({ side, children }: { side: "left" | "right"; children: string }) {
+  return (
+    <div className={`flex-1 ${side === "left" ? "text-right" : "text-left"}`}>
+      <span className="label-mono text-[0.6rem] text-muted">{children}</span>
+    </div>
+  );
+}
+
+function IconBox({
   side,
-  heading,
   items,
   index,
   reduce,
 }: {
   side: "left" | "right";
-  heading: string;
   items: Item[];
   index: number;
   reduce: boolean;
 }) {
   const active = items[index];
   const Icon = active.icon;
-  const align = side === "left" ? "items-end text-right" : "items-start text-left";
 
   return (
-    <div className={`flex flex-1 flex-col ${align}`}>
-      <span className="label-mono text-[0.6rem] text-muted">{heading}</span>
-
-      <div className="relative mt-4 h-16 w-16">
+    <div className="flex flex-1 flex-col items-center">
+      <div className="relative size-16 shrink-0">
         <motion.div
           aria-hidden
           className="absolute inset-0 rounded-full"
@@ -107,7 +111,7 @@ function IconStack({
         </motion.div>
       </div>
 
-      <div className="mt-3 h-9 w-28">
+      <div className="mt-3 flex h-9 w-full items-start justify-center px-1 text-center">
         <AnimatePresence mode="wait">
           <motion.p
             key={active.label}
@@ -183,46 +187,54 @@ export function EcosystemOrbit({ ready = true }: { ready?: boolean }) {
         initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }}
         animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
         transition={{ duration: 0.9, ease: EASE_OUT, delay: 0.15 }}
-        className="relative flex items-center justify-between gap-2 rounded-2xl border border-line bg-elevated/40 px-5 py-12 sm:px-8"
+        className="relative rounded-2xl border border-line bg-elevated/40 px-5 py-10 sm:px-8"
       >
-        <svg
-          viewBox="0 0 1000 220"
-          preserveAspectRatio="none"
-          className="pointer-events-none absolute inset-0 size-full overflow-visible"
-          aria-hidden
-        >
-          <path id="ecosystem-left-path" d={LEFT_PATH} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
-          <path id="ecosystem-right-path" d={RIGHT_PATH} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
-          <FlowParticles path="ecosystem-left-path" reduce={reduce} />
-          <FlowParticles path="ecosystem-right-path" reduce={reduce} reverse />
-        </svg>
-
-        <IconStack side="left" heading="Businesses" items={BUSINESSES} index={bizIndex} reduce={reduce} />
-
-        <div className="relative z-10 flex shrink-0 items-center justify-center px-2">
-          <motion.div
-            aria-hidden
-            className="pointer-events-none absolute inset-0 m-auto size-20 rounded-full"
-            style={{ background: "radial-gradient(circle, rgba(242,87,74,0.45) 0%, transparent 70%)" }}
-            key={pulse}
-            initial={{ opacity: 0.75, scale: 0.7 }}
-            animate={{ opacity: 0, scale: 1.5 }}
-            transition={{ duration: 1.3, ease: "easeOut" }}
-          />
-
-          <div className="relative z-10 flex size-16 items-center justify-center rounded-full border border-line-strong bg-void shadow-[0_0_40px_-8px_rgba(224,71,59,0.5)] sm:size-[4.5rem]">
-            <Image
-              src="/brand/logo.png"
-              alt="Zaina Solutions"
-              width={40}
-              height={40}
-              className="size-8 object-contain sm:size-9"
-              priority
-            />
-          </div>
+        <div className="flex items-center justify-between gap-2">
+          <Heading side="left">Businesses</Heading>
+          <div className="w-16 shrink-0 sm:w-[4.5rem]" aria-hidden />
+          <Heading side="right">Students</Heading>
         </div>
 
-        <IconStack side="right" heading="Students" items={STUDENTS} index={stuIndex} reduce={reduce} />
+        <div className="relative mt-4 flex items-center justify-between gap-2">
+          <svg
+            viewBox="0 0 1000 200"
+            preserveAspectRatio="none"
+            className="pointer-events-none absolute inset-x-0 top-8 h-16 w-full overflow-visible"
+            aria-hidden
+          >
+            <path id="ecosystem-left-path" d={LEFT_PATH} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+            <path id="ecosystem-right-path" d={RIGHT_PATH} fill="none" stroke="rgba(255,255,255,0.12)" strokeWidth="1.5" vectorEffect="non-scaling-stroke" />
+            <FlowParticles path="ecosystem-left-path" reduce={reduce} />
+            <FlowParticles path="ecosystem-right-path" reduce={reduce} reverse />
+          </svg>
+
+          <IconBox side="left" items={BUSINESSES} index={bizIndex} reduce={reduce} />
+
+          <div className="relative z-10 flex size-16 shrink-0 items-center justify-center sm:size-[4.5rem]">
+            <motion.div
+              aria-hidden
+              className="pointer-events-none absolute inset-0 m-auto size-20 rounded-full"
+              style={{ background: "radial-gradient(circle, rgba(242,87,74,0.45) 0%, transparent 70%)" }}
+              key={pulse}
+              initial={{ opacity: 0.75, scale: 0.7 }}
+              animate={{ opacity: 0, scale: 1.5 }}
+              transition={{ duration: 1.3, ease: "easeOut" }}
+            />
+
+            <div className="relative z-10 flex size-16 items-center justify-center rounded-full border border-line-strong bg-void shadow-[0_0_40px_-8px_rgba(224,71,59,0.5)] sm:size-[4.5rem]">
+              <Image
+                src="/brand/logo.png"
+                alt="Zaina Solutions"
+                width={40}
+                height={40}
+                className="size-8 object-contain sm:size-9"
+                priority
+              />
+            </div>
+          </div>
+
+          <IconBox side="right" items={STUDENTS} index={stuIndex} reduce={reduce} />
+        </div>
       </motion.div>
     </div>
   );
