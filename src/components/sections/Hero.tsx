@@ -7,7 +7,7 @@ import {
   useReducedMotion,
 } from "motion/react";
 import { useRef } from "react";
-import { Showcase } from "@/components/site/Showcase";
+import { EcosystemOrbit } from "@/components/site/EcosystemOrbit";
 import { PillButton } from "@/components/ui/PillButton";
 import { MaskText } from "@/components/ui/MaskText";
 import { useIntroReady } from "@/components/site/Intro";
@@ -97,7 +97,7 @@ export function Hero() {
         </motion.div>
 
         <motion.div style={{ y: visualY }} className="relative">
-          <Showcase ready={ready} />
+          <EcosystemOrbit ready={ready} />
         </motion.div>
       </div>
 
