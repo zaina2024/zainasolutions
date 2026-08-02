@@ -4,6 +4,7 @@ import { Nav } from "@/components/site/Nav";
 import { Footer } from "@/components/site/Footer";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
 import { WorkGallery } from "@/components/sections/WorkGallery";
+import { PROJECTS } from "@/lib/projects";
 
 export const metadata: Metadata = {
   title: "Selected Work",
@@ -21,9 +22,40 @@ export const metadata: Metadata = {
   },
 };
 
+const SITE = "https://zainasolutions.com";
+
+const WORK_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Selected Work · Zaina Solutions",
+  description:
+    "Selected websites, products, and brands designed and built by Zaina Solutions.",
+  url: `${SITE}/work`,
+  isPartOf: { "@type": "WebSite", name: "Zaina Solutions", url: SITE },
+  mainEntity: {
+    "@type": "ItemList",
+    itemListElement: PROJECTS.map((p, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      item: {
+        "@type": "CreativeWork",
+        name: p.title,
+        description: p.blurb,
+        additionalType: p.category,
+        ...(p.url ? { url: p.url } : {}),
+        creator: { "@type": "Organization", name: "Zaina Solutions" },
+      },
+    })),
+  },
+};
+
 export default function WorkPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(WORK_JSON_LD) }}
+      />
       <Background />
       <Nav />
       <SmoothScroll />

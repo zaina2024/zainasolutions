@@ -15,7 +15,7 @@ export function Contact() {
         <div className="text-center">
           <Reveal>
             <div className="flex justify-center">
-              <SectionLabel index="06">START</SectionLabel>
+              <SectionLabel index="07">START</SectionLabel>
             </div>
           </Reveal>
           <MaskText

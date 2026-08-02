@@ -9,11 +9,30 @@ import { Model } from "@/components/sections/Model";
 import { Services } from "@/components/sections/Services";
 import { Stats } from "@/components/sections/Stats";
 import { Team } from "@/components/sections/Team";
+import { FAQ } from "@/components/sections/FAQ";
 import { Contact } from "@/components/sections/Contact";
+import { FAQS } from "@/lib/faqs";
+
+const FAQ_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((item) => ({
+    "@type": "Question",
+    name: item.q,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.a,
+    },
+  })),
+};
 
 export default function Home() {
   return (
     <IntroProvider>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSON_LD) }}
+      />
       <SmoothScroll />
       <Background />
       <Nav />
@@ -24,6 +43,7 @@ export default function Home() {
         <Services />
         <Stats />
         <Team />
+        <FAQ />
         <Contact />
       </main>
       <Footer />

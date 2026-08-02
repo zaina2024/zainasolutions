@@ -115,6 +115,58 @@ const JSON_LD = {
     "AI Automation",
     "MVP Development",
   ],
+  makesOffer: [
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "Website Development",
+        description:
+          "Fast, modern websites engineered to convert visitors into customers and built to scale.",
+      },
+    },
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "App Development",
+        description: "Native iOS and Android applications built to ship.",
+      },
+    },
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "Branding",
+        description: "Identity systems and brand strategy with a backbone.",
+      },
+    },
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "UI/UX Design",
+        description: "Product and interface design people actually enjoy using.",
+      },
+    },
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "AI Automation",
+        description:
+          "AI-powered workflow automations that save hours of manual work every week.",
+      },
+    },
+    {
+      "@type": "Offer",
+      itemOffered: {
+        "@type": "Service",
+        name: "MVP Development",
+        description: "From idea to launchable product, fast.",
+      },
+    },
+  ],
 };
 
 export const viewport: Viewport = {
