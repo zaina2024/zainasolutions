@@ -19,7 +19,7 @@ export function Team() {
     <section id="team" className="relative scroll-mt-24 py-20 sm:py-28 lg:py-36">
       <div className="mx-auto max-w-[88rem] px-5 sm:px-8">
         <Reveal>
-          <SectionLabel index="05">WHO LEADS</SectionLabel>
+          <SectionLabel index="06">WHO LEADS</SectionLabel>
         </Reveal>
 
         <div className="mt-10 grid items-center gap-12 lg:grid-cols-12 lg:gap-16">

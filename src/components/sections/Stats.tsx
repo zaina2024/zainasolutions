@@ -37,7 +37,7 @@ export function Stats() {
 
       <div className="relative mx-auto max-w-[88rem] px-5 sm:px-8">
         <Reveal>
-          <SectionLabel index="04">THE PROOF</SectionLabel>
+          <SectionLabel index="05">THE PROOF</SectionLabel>
         </Reveal>
 
         <dl className="mt-12 grid grid-cols-2 gap-x-6 gap-y-12 lg:grid-cols-4">
