@@ -1,13 +1,13 @@
 "use client";
 
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { MessageCircle, Phone, Send, X, ArrowUpRight } from "lucide-react";
+import { MessageCircle, Phone, Send, X, ArrowUpRight, Calculator } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { SocialIcon } from "@/components/ui/SocialIcon";
 import { SITE_CONTACT } from "@/lib/site";
 import { cn } from "@/lib/utils";
 
-type ChatAction = "whatsapp" | "call" | "contact";
+type ChatAction = "whatsapp" | "call" | "contact" | "estimate";
 
 type Message = {
   id: number;
@@ -35,6 +35,16 @@ const HISTORY_WINDOW = 11;
 function ActionButtons({ actions, onContact }: { actions: ChatAction[]; onContact: () => void }) {
   return (
     <div className="mt-2.5 flex flex-wrap gap-2">
+      {actions.includes("estimate") && (
+        <a
+          href="/#estimate"
+          onClick={onContact}
+          className="inline-flex items-center gap-1.5 rounded-full border border-signal/50 px-3 py-1.5 font-sans text-xs font-medium text-paper transition-colors hover:bg-signal hover:text-paper"
+        >
+          <Calculator className="size-3.5" />
+          Calculate your budget
+        </a>
+      )}
       {actions.includes("whatsapp") && (
         <a
           href={SITE_CONTACT.whatsappHref}

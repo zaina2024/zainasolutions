@@ -219,6 +219,11 @@ export function Estimator() {
             Answer a few questions and get an instant estimate. No jargon, no
             commitment - just a real starting number.
           </p>
+          <p className="mt-3 max-w-lg font-sans text-xs leading-relaxed text-muted/70">
+            Zaina&apos;s free website cost calculator covers basic websites,
+            e-commerce stores, and custom software, so you know roughly what a
+            project in India costs before you talk to anyone.
+          </p>
         </Reveal>
 
         <Reveal delay={0.15} className="mt-10">

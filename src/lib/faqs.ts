@@ -11,7 +11,11 @@ export const FAQS: FaqItem[] = [
   },
   {
     q: "How much does a website or app cost?",
-    a: "Zaina Solutions does not publish fixed prices - every quote is custom based on scope, timeline, and complexity. Share your project details through the contact form or WhatsApp and you'll get a tailored quote, not a generic price list.",
+    a: "Zaina Solutions does not publish a fixed price list - every quote is custom based on scope, timeline, and complexity. Use the Budget Calculator on this page for an instant, itemized starting estimate, then share your project details through the contact form or WhatsApp for an exact quote.",
+  },
+  {
+    q: "Does Zaina Solutions have a price or budget calculator?",
+    a: "Yes - the Budget Calculator on this site walks through project type, design, features, timeline, and hosting, then shows an itemized starting estimate (build cost, domain, hosting) with no signup or commitment required. It is a real starting number, not a final quote.",
   },
   {
     q: "Is Zaina Solutions a good fit for a small business or startup with a limited budget?",

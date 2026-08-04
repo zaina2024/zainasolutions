@@ -13,6 +13,9 @@ import { Team } from "@/components/sections/Team";
 import { FAQ } from "@/components/sections/FAQ";
 import { Contact } from "@/components/sections/Contact";
 import { FAQS } from "@/lib/faqs";
+import { PROJECT_TYPES } from "@/lib/estimator";
+
+const SITE = "https://zainasolutions.com";
 
 const FAQ_JSON_LD = {
   "@context": "https://schema.org",
@@ -27,12 +30,38 @@ const FAQ_JSON_LD = {
   })),
 };
 
+const ESTIMATOR_PRICES = PROJECT_TYPES.map((p) => p.base);
+
+const ESTIMATOR_JSON_LD = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Zaina Solutions Budget Calculator",
+  url: `${SITE}/#estimate`,
+  applicationCategory: "BusinessApplication",
+  operatingSystem: "Any (web-based)",
+  description:
+    "An 8-step interactive calculator that gives an instant, itemized starting estimate for a website, e-commerce, or custom software project, covering design, features, timeline, hosting, and domain costs. No signup required, not a binding quote.",
+  isAccessibleForFree: true,
+  offers: {
+    "@type": "AggregateOffer",
+    priceCurrency: "INR",
+    lowPrice: Math.min(...ESTIMATOR_PRICES),
+    highPrice: Math.max(...ESTIMATOR_PRICES),
+    offerCount: PROJECT_TYPES.length,
+  },
+  provider: { "@type": "Organization", name: "Zaina Solutions", url: SITE },
+};
+
 export default function Home() {
   return (
     <IntroProvider>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_JSON_LD) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ESTIMATOR_JSON_LD) }}
       />
       <SmoothScroll />
       <Background />
