@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "motion/react";
-import { ArrowLeft, ArrowRight, Check, RotateCcw, Search } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, Check, RotateCcw, Search } from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
 import { MaskText } from "@/components/ui/MaskText";
@@ -17,6 +17,7 @@ import {
   FEATURES,
   TIMELINES,
   HOSTING_OPTIONS,
+  FREE_HOSTING_RISK,
   INITIAL_ANSWERS,
   calculateBreakdown,
   type EstimatorAnswers,
@@ -369,6 +370,28 @@ export function Estimator() {
                           />
                         ))}
                       </div>
+
+                      <AnimatePresence>
+                        {answers.hosting === "free" &&
+                          answers.projectType &&
+                          FREE_HOSTING_RISK[answers.projectType] && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.3, ease: EASE_OUT }}
+                              className="overflow-hidden"
+                            >
+                              <div className="mt-4 flex items-start gap-3 rounded-xl border border-signal/30 bg-signal/[0.07] px-4 py-3.5">
+                                <AlertTriangle className="mt-0.5 size-4 shrink-0 text-signal" />
+                                <p className="font-sans text-sm leading-relaxed text-paper/85">
+                                  {FREE_HOSTING_RISK[answers.projectType]}
+                                </p>
+                              </div>
+                            </motion.div>
+                          )}
+                      </AnimatePresence>
+
                       <Nav onBack={() => go(5, -1)} onNext={() => go(7, 1)} nextDisabled={!canProceed[6]} />
                     </StepShell>
                   )}
@@ -439,6 +462,17 @@ export function Estimator() {
                           </span>
                         </div>
                       </div>
+
+                      {answers.hosting === "free" &&
+                        answers.projectType &&
+                        FREE_HOSTING_RISK[answers.projectType] && (
+                          <div className="mt-3 flex items-start gap-3 rounded-xl border border-signal/30 bg-signal/[0.07] px-4 py-3.5">
+                            <AlertTriangle className="mt-0.5 size-4 shrink-0 text-signal" />
+                            <p className="font-sans text-xs leading-relaxed text-paper/80">
+                              {FREE_HOSTING_RISK[answers.projectType]}
+                            </p>
+                          </div>
+                        )}
 
                       <div className="mt-4 flex items-center justify-between gap-4 rounded-xl border border-signal/30 bg-signal/[0.06] px-5 py-4">
                         <span className="font-display text-base font-medium tracking-tight sm:text-lg">

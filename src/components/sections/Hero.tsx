@@ -84,6 +84,21 @@ export function Hero() {
             </PillButton>
           </motion.div>
 
+          <motion.div variants={rise} className="mt-5">
+            <a
+              href="#estimate"
+              className="group inline-flex items-center gap-1.5 font-sans text-sm text-muted transition-colors hover:text-paper"
+            >
+              Not sure what it'll cost?
+              <span className="text-signal underline underline-offset-4 decoration-signal/40 group-hover:decoration-signal">
+                Calculate your budget
+              </span>
+              <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-0.5">
+                →
+              </span>
+            </a>
+          </motion.div>
+
           <motion.div variants={rise} className="mt-12 border-t border-line pt-6">
             <p className="label-mono text-[0.6rem]">What we do</p>
             <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2">

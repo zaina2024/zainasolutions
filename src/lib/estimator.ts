@@ -59,6 +59,14 @@ export const HOSTING_OPTIONS: { value: Hosting; label: string; blurb: string; ye
   },
 ];
 
+/** Project types where picking Free Hosting is a real risk, not just a tradeoff - shown as an inline warning, not a block. */
+export const FREE_HOSTING_RISK: Partial<Record<ProjectType, string>> = {
+  ecommerce:
+    "An online store needs reliable uptime, checkout security, and room to scale - free hosting often can't guarantee any of that, which risks lost sales. We'd strongly recommend paid hosting here.",
+  custom:
+    "Custom software/SaaS builds usually need a real database and consistent uptime - free tiers are rarely built for that. Paid hosting is the safer choice for this kind of project.",
+};
+
 export const DOMAIN_YEARLY_ESTIMATE = 1200;
 
 export type EstimatorAnswers = {
