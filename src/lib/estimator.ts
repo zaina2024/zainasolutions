@@ -42,20 +42,24 @@ export const TIMELINES: { value: Timeline; label: string; blurb: string; add: nu
   { value: "rush", label: "Rush", blurb: "1-2 weeks - prioritized on our schedule.", add: 12000 },
 ];
 
-export const HOSTING_OPTIONS: { value: Hosting; label: string; blurb: string }[] = [
+export const HOSTING_OPTIONS: { value: Hosting; label: string; blurb: string; yearly: number }[] = [
   {
     value: "free",
     label: "Free Hosting",
     blurb:
       "Good for smaller sites getting started - zero monthly cost, but with limits on scale, uptime guarantees, and support response time.",
+    yearly: 0,
   },
   {
     value: "paid",
     label: "Paid Hosting",
     blurb:
       "Roughly ₹500-₹2,000/month depending on traffic - better uptime, faster support, and room to grow without hitting a wall.",
+    yearly: 12000,
   },
 ];
+
+export const DOMAIN_YEARLY_ESTIMATE = 1200;
 
 export type EstimatorAnswers = {
   projectType: ProjectType | null;
@@ -77,7 +81,7 @@ export const INITIAL_ANSWERS: EstimatorAnswers = {
   domain: "",
 };
 
-export function calculateEstimate(answers: EstimatorAnswers): number {
+function buildLine(answers: EstimatorAnswers): number {
   let total = 0;
   const project = PROJECT_TYPES.find((p) => p.value === answers.projectType);
   total += project?.base ?? 0;
@@ -97,4 +101,57 @@ export function calculateEstimate(answers: EstimatorAnswers): number {
   total += timeline?.add ?? 0;
 
   return total;
+}
+
+export function calculateEstimate(answers: EstimatorAnswers): number {
+  return buildLine(answers);
+}
+
+export type BreakdownLine = { label: string; amount: number; note?: string };
+
+export type EstimateBreakdown = {
+  buildLine: BreakdownLine[];
+  buildTotal: number;
+  domainYearly: number;
+  hostingYearly: number;
+  totalToStart: number;
+  installments: { parts: number; label: string; each: number }[];
+};
+
+export function calculateBreakdown(answers: EstimatorAnswers): EstimateBreakdown {
+  const buildLines: BreakdownLine[] = [];
+
+  const project = PROJECT_TYPES.find((p) => p.value === answers.projectType);
+  if (project) buildLines.push({ label: project.label, amount: project.base });
+
+  const design = DESIGN_MODES.find((d) => d.value === answers.designMode);
+  if (design && design.add > 0) buildLines.push({ label: design.label, amount: design.add });
+
+  const editing = CONTENT_EDITING.find((c) => c.value === answers.contentEditing);
+  if (editing && editing.add > 0) buildLines.push({ label: "Self-editable (CMS)", amount: editing.add });
+
+  for (const key of answers.features) {
+    const feature = FEATURES.find((f) => f.value === key);
+    if (feature) buildLines.push({ label: feature.label, amount: feature.add });
+  }
+
+  const timeline = TIMELINES.find((t) => t.value === answers.timeline);
+  if (timeline && timeline.add > 0) buildLines.push({ label: "Rush delivery", amount: timeline.add });
+
+  const buildTotal = buildLines.reduce((sum, l) => sum + l.amount, 0);
+
+  const hosting = HOSTING_OPTIONS.find((h) => h.value === answers.hosting);
+  const hostingYearly = hosting?.yearly ?? 0;
+  const domainYearly = DOMAIN_YEARLY_ESTIMATE;
+
+  const totalToStart = buildTotal + domainYearly + hostingYearly;
+
+  const installments = [2, 3].map((parts) => ({
+    parts,
+    label:
+      parts === 2 ? "2 parts (50% now, 50% on delivery)" : `${parts} equal parts`,
+    each: Math.round(buildTotal / parts),
+  }));
+
+  return { buildLine: buildLines, buildTotal, domainYearly, hostingYearly, totalToStart, installments };
 }

@@ -6,10 +6,10 @@ import { ArrowLeft, ArrowRight, Check, RotateCcw, Search } from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
 import { MaskText } from "@/components/ui/MaskText";
-import { PillButton } from "@/components/ui/PillButton";
-import { CountUp } from "@/components/ui/CountUp";
+import { SocialIcon } from "@/components/ui/SocialIcon";
 import { EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
+import { SITE_CONTACT } from "@/lib/site";
 import {
   PROJECT_TYPES,
   DESIGN_MODES,
@@ -18,7 +18,7 @@ import {
   TIMELINES,
   HOSTING_OPTIONS,
   INITIAL_ANSWERS,
-  calculateEstimate,
+  calculateBreakdown,
   type EstimatorAnswers,
   type FeatureKey,
 } from "@/lib/estimator";
@@ -141,7 +141,28 @@ export function Estimator() {
   const [answers, setAnswers] = useState<EstimatorAnswers>(INITIAL_ANSWERS);
   const [direction, setDirection] = useState(1);
 
-  const estimate = useMemo(() => calculateEstimate(answers), [answers]);
+  const breakdown = useMemo(() => calculateBreakdown(answers), [answers]);
+
+  const whatsappHref = useMemo(() => {
+    const project = PROJECT_TYPES.find((p) => p.value === answers.projectType);
+    const lines = [
+      `Hi! I used the budget calculator on your site and got an estimate.`,
+      ``,
+      `Project: ${project?.label ?? "-"}`,
+      ...breakdown.buildLine
+        .filter((l) => l.label !== project?.label)
+        .map((l) => `+ ${l.label}: ₹${l.amount.toLocaleString("en-IN")}`),
+      ``,
+      `Website build total: ₹${breakdown.buildTotal.toLocaleString("en-IN")}`,
+      `Domain (est./year): ₹${breakdown.domainYearly.toLocaleString("en-IN")}`,
+      `Hosting (est./year): ${breakdown.hostingYearly > 0 ? `₹${breakdown.hostingYearly.toLocaleString("en-IN")}` : "Free"}`,
+      answers.domain ? `Domain in mind: ${answers.domain}` : ``,
+      ``,
+      `Can we talk through the exact quote?`,
+    ].filter(Boolean);
+    const base = SITE_CONTACT.whatsappHref.split("?")[0];
+    return `${base}?text=${encodeURIComponent(lines.join("\n"))}`;
+  }, [answers, breakdown]);
 
   function go(next: number, dir: 1 | -1) {
     setDirection(dir);
@@ -375,19 +396,103 @@ export function Estimator() {
                   )}
 
                   {step === 8 && (
-                    <div className="flex flex-col items-center text-center">
+                    <div>
                       <p className="label-mono text-[0.6rem] text-signal">YOUR ESTIMATE</p>
-                      <p className="mt-5 font-display text-5xl font-medium tracking-tight sm:text-6xl">
-                        <CountUp to={estimate} prefix="₹" duration={1.2} />
-                      </p>
-                      <p className="mt-4 max-w-sm font-sans text-sm leading-relaxed text-muted">
-                        A real starting estimate based on your answers - not a final
-                        quote. Every project gets scoped properly before we lock
-                        anything in.
+                      <h3 className="mt-3 font-display text-2xl font-medium tracking-tight sm:text-3xl">
+                        Here&apos;s what it comes to.
+                      </h3>
+
+                      <div className="mt-8 divide-y divide-line rounded-xl border border-line bg-void/30">
+                        {breakdown.buildLine.map((line) => (
+                          <div
+                            key={line.label}
+                            className="flex items-center justify-between gap-4 px-5 py-3.5"
+                          >
+                            <span className="font-sans text-sm text-muted">{line.label}</span>
+                            <span className="label-mono text-[0.7rem] text-paper/85">
+                              ₹{line.amount.toLocaleString("en-IN")}
+                            </span>
+                          </div>
+                        ))}
+                        <div className="flex items-center justify-between gap-4 bg-paper/[0.03] px-5 py-3.5">
+                          <span className="font-sans text-sm font-medium text-paper">
+                            Website build (one-time)
+                          </span>
+                          <span className="label-mono text-[0.72rem] font-semibold text-signal">
+                            ₹{breakdown.buildTotal.toLocaleString("en-IN")}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between gap-4 px-5 py-3.5">
+                          <span className="font-sans text-sm text-muted">
+                            Domain{answers.domain ? ` (${answers.domain})` : ""}, per year
+                          </span>
+                          <span className="label-mono text-[0.7rem] text-paper/85">
+                            ₹{breakdown.domainYearly.toLocaleString("en-IN")}
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between gap-4 px-5 py-3.5">
+                          <span className="font-sans text-sm text-muted">Hosting, per year</span>
+                          <span className="label-mono text-[0.7rem] text-paper/85">
+                            {breakdown.hostingYearly > 0
+                              ? `₹${breakdown.hostingYearly.toLocaleString("en-IN")}`
+                              : "Free"}
+                          </span>
+                        </div>
+                      </div>
+
+                      <div className="mt-4 flex items-center justify-between gap-4 rounded-xl border border-signal/30 bg-signal/[0.06] px-5 py-4">
+                        <span className="font-display text-base font-medium tracking-tight sm:text-lg">
+                          Total to get started
+                        </span>
+                        <span className="font-display text-xl font-semibold tracking-tight text-signal sm:text-2xl">
+                          ₹{breakdown.totalToStart.toLocaleString("en-IN")}
+                        </span>
+                      </div>
+                      <p className="mt-3 font-sans text-xs leading-relaxed text-muted/80">
+                        Estimate only - domain and hosting are yearly, the website
+                        build is one-time. Not a final quote - we&apos;ll confirm
+                        exact numbers once we understand your project.
                       </p>
 
-                      <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-                        <PillButton href="/#contact">Get my exact quote</PillButton>
+                      <div className="mt-8 border-t border-line pt-6">
+                        <p className="font-sans text-sm font-medium text-paper">
+                          Prefer to split the payment?
+                        </p>
+                        <div className="mt-3 space-y-2">
+                          <div className="flex items-center justify-between gap-4 text-sm">
+                            <span className="text-muted">Pay in full</span>
+                            <span className="label-mono text-[0.68rem] text-paper/85">
+                              ₹{breakdown.buildTotal.toLocaleString("en-IN")}
+                            </span>
+                          </div>
+                          {breakdown.installments.map((inst) => (
+                            <div
+                              key={inst.parts}
+                              className="flex items-center justify-between gap-4 text-sm"
+                            >
+                              <span className="text-muted">{inst.label}</span>
+                              <span className="label-mono text-[0.68rem] text-paper/85">
+                                ₹{inst.each.toLocaleString("en-IN")} × {inst.parts}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                        <p className="mt-3 font-sans text-xs text-muted/70">
+                          No interest added - a Zaina instalment plan, on the website
+                          build cost only.
+                        </p>
+                      </div>
+
+                      <div className="mt-9 flex flex-wrap items-center gap-3">
+                        <a
+                          href={whatsappHref}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="group inline-flex items-center gap-2.5 rounded-full bg-paper px-5 py-2.5 font-sans text-sm font-medium tracking-tight text-void shadow-[0_2px_20px_-8px_rgba(244,242,238,0.35)] transition-[background-color,box-shadow] duration-300 hover:bg-paper/90"
+                        >
+                          <SocialIcon name="whatsapp" className="size-4" />
+                          Get this estimate on WhatsApp
+                        </a>
                         <button
                           type="button"
                           onClick={reset}
