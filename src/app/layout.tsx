@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit, Geist_Mono } from "next/font/google";
 import { ChatWidget } from "@/components/site/ChatWidget";
+import { MetaPixel } from "@/components/site/MetaPixel";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -193,6 +194,7 @@ export default function RootLayout({
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
         />
+        <MetaPixel />
         {children}
         <ChatWidget />
       </body>

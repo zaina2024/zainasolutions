@@ -10,6 +10,7 @@ import { SocialIcon } from "@/components/ui/SocialIcon";
 import { EASE_OUT } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { SITE_CONTACT } from "@/lib/site";
+import { trackMetaEvent } from "@/components/site/MetaPixel";
 import {
   PROJECT_TYPES,
   DESIGN_MODES,
@@ -419,7 +420,14 @@ export function Estimator() {
                           className="w-full rounded-lg border border-line bg-void/40 py-3 pl-11 pr-4 font-sans text-sm text-paper placeholder:text-muted/60 outline-none transition-colors focus:border-signal/60"
                         />
                       </div>
-                      <Nav onBack={() => go(6, -1)} onNext={() => go(8, 1)} nextLabel="Get my estimate" />
+                      <Nav
+                        onBack={() => go(6, -1)}
+                        onNext={() => {
+                          trackMetaEvent("Lead", { content_name: "Budget Calculator" });
+                          go(8, 1);
+                        }}
+                        nextLabel="Get my estimate"
+                      />
                     </StepShell>
                   )}
 
@@ -527,6 +535,9 @@ export function Estimator() {
                           href={whatsappHref}
                           target="_blank"
                           rel="noopener noreferrer"
+                          onClick={() =>
+                            trackMetaEvent("Contact", { content_name: "Budget Calculator WhatsApp" })
+                          }
                           className="group inline-flex items-center gap-2.5 rounded-full bg-paper px-5 py-2.5 font-sans text-sm font-medium tracking-tight text-void shadow-[0_2px_20px_-8px_rgba(244,242,238,0.35)] transition-[background-color,box-shadow] duration-300 hover:bg-paper/90"
                         >
                           <SocialIcon name="whatsapp" className="size-4" />
