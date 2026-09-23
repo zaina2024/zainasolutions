@@ -63,7 +63,7 @@ export function FAQ() {
     <section id="faq" className="relative scroll-mt-24 py-20 sm:py-28 lg:py-36">
       <div className="mx-auto max-w-[60rem] px-5 sm:px-8">
         <Reveal>
-          <SectionLabel index="07">QUESTIONS</SectionLabel>
+          <SectionLabel index="08">QUESTIONS</SectionLabel>
         </Reveal>
 
         <MaskText

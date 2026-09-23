@@ -12,9 +12,9 @@ import { cn } from "@/lib/utils";
 const NAV_ITEMS = [
   { id: "top", index: "00", label: "HOME", href: "/" },
   { id: "about", index: "01", label: "ABOUT", href: "/#about" },
-  { id: "services", index: "02", label: "SERVICES", href: "/#services" },
-  { id: "products", index: "03", label: "PRODUCTS", href: "/work" },
-  { id: "work", index: "04", label: "WORK", href: "/work" },
+  { id: "work", index: "02", label: "WORK", href: "/work" },
+  { id: "services", index: "03", label: "SERVICES", href: "/#services" },
+  { id: "estimate", index: "04", label: "PRICING", href: "/#estimate" },
   { id: "contact", index: "05", label: "CONTACT", href: "/#contact" },
 ];
 
@@ -22,7 +22,7 @@ export function Nav() {
   const reduce = useReducedMotion();
   const ready = useIntroReady();
   const pathname = usePathname();
-  const onWork = pathname === "/work";
+  const onWork = pathname?.startsWith("/work") ?? false;
   const { scrollYProgress } = useScroll();
   const [active, setActive] = useState("top");
   const [scrolled, setScrolled] = useState(false);

@@ -72,7 +72,7 @@ export function Model() {
     <section id="model" className="relative scroll-mt-24 py-20 sm:py-28 lg:py-36">
       <div className="mx-auto max-w-[88rem] px-5 sm:px-8">
         <Reveal>
-          <SectionLabel index="02">THE MODEL</SectionLabel>
+          <SectionLabel index="04">THE MODEL</SectionLabel>
         </Reveal>
 
         <div className="mt-8 grid gap-10 lg:grid-cols-12 lg:gap-8">

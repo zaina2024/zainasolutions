@@ -10,8 +10,10 @@ const SOCIALS = [
 
 const EXPLORE = [
   { label: "Home", href: "/" },
-  { label: "The Model", href: "/#model" },
+  { label: "Work & Case Studies", href: "/work" },
   { label: "Services", href: "/#services" },
+  { label: "The Model", href: "/#model" },
+  { label: "Budget Calculator", href: "/#estimate" },
   { label: "Leadership", href: "/#team" },
   { label: "Contact", href: "/#contact" },
 ];

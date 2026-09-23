@@ -79,7 +79,7 @@ export function Hero() {
 
           <motion.div variants={rise} className="mt-9 flex flex-wrap items-center gap-4">
             <PillButton href="#contact">Start a Project</PillButton>
-            <PillButton href="/work" variant="ghost">
+            <PillButton href="/#work" variant="ghost">
               View Our Work
             </PillButton>
           </motion.div>

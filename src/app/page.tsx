@@ -6,6 +6,7 @@ import { Footer } from "@/components/site/Footer";
 import { Hero } from "@/components/sections/Hero";
 import { About } from "@/components/sections/About";
 import { Model } from "@/components/sections/Model";
+import { Work } from "@/components/sections/Work";
 import { Services } from "@/components/sections/Services";
 import { Estimator } from "@/components/sections/Estimator";
 import { Stats } from "@/components/sections/Stats";
@@ -69,10 +70,11 @@ export default function Home() {
       <main>
         <Hero />
         <About />
-        <Model />
+        <Work />
         <Services />
-        <Estimator />
+        <Model />
         <Stats />
+        <Estimator />
         <Team />
         <FAQ />
         <Contact />
