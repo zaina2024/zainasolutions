@@ -8,7 +8,7 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
 import { cn } from "@/lib/utils";
-import { PROJECTS, coverOf, type Category } from "@/lib/projects";
+import { PROJECTS, coverOf, isOwnProduct, type Category } from "@/lib/projects";
 
 const TABS = ["All", "Websites", "Products", "Branding", "UI/UX"] as const;
 type Tab = (typeof TABS)[number];
@@ -131,9 +131,16 @@ export function WorkGallery() {
                     aria-hidden
                     className="absolute inset-0 bg-gradient-to-t from-void via-void/55 to-void/10"
                   />
-                  <span className="label-mono absolute left-5 top-5 rounded-full border border-line-strong bg-void/85 px-3 py-1.5 text-[0.54rem] text-paper backdrop-blur-md">
-                    {p.tag}
-                  </span>
+                  <div className="absolute left-5 top-5 flex flex-wrap items-center gap-2">
+                    <span className="label-mono rounded-full border border-line-strong bg-void/85 px-3 py-1.5 text-[0.54rem] text-paper backdrop-blur-md">
+                      {p.tag}
+                    </span>
+                    {isOwnProduct(p) && (
+                      <span className="label-mono rounded-full border border-signal bg-signal px-3 py-1.5 text-[0.54rem] text-paper backdrop-blur-md">
+                        OUR PRODUCT
+                      </span>
+                    )}
+                  </div>
                   <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-7">
                     <div>
                       <span className="label-mono text-[0.56rem] text-paper/60">

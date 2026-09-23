@@ -16,6 +16,7 @@ import {
   nextProject,
   coverOf,
   pagesOf,
+  isOwnProduct,
 } from "@/lib/projects";
 
 const SITE = "https://zainasolutions.com";
@@ -161,6 +162,11 @@ export default async function CaseStudyPage({
                   <span className="label-mono rounded-full border border-signal/40 px-2.5 py-1 text-[0.54rem] text-signal">
                     {project.tag}
                   </span>
+                  {isOwnProduct(project) && (
+                    <span className="label-mono rounded-full border border-signal bg-signal px-2.5 py-1 text-[0.54rem] text-paper">
+                      OUR PRODUCT
+                    </span>
+                  )}
                 </div>
               </Reveal>
               <Reveal delay={0.1}>
@@ -190,7 +196,9 @@ export default async function CaseStudyPage({
             <Reveal delay={0.2} className="lg:col-span-5">
               <dl className="grid grid-cols-2 gap-x-6 gap-y-6 rounded-2xl border border-line bg-elevated/40 p-6 sm:p-7">
                 <div>
-                  <dt className="label-mono text-[0.56rem] text-muted/70">CLIENT</dt>
+                  <dt className="label-mono text-[0.56rem] text-muted/70">
+                    {isOwnProduct(project) ? "OWNED BY" : "CLIENT"}
+                  </dt>
                   <dd className="mt-2 font-sans text-sm text-paper">{project.client}</dd>
                 </div>
                 <div>

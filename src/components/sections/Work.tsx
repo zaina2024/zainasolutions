@@ -10,7 +10,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { MaskText } from "@/components/ui/MaskText";
 import { PillButton } from "@/components/ui/PillButton";
 import { EASE_OUT, VIEWPORT_ONCE } from "@/lib/motion";
-import { PROJECTS, coverOf, type Project } from "@/lib/projects";
+import { PROJECTS, coverOf, isOwnProduct, type Project } from "@/lib/projects";
 
 const FEATURED = ["topvision", "aardha", "gobeyond"];
 
@@ -63,15 +63,25 @@ function FeatureRow({ project, index }: { project: Project; index: number }) {
               aria-hidden
               className="absolute inset-0 bg-gradient-to-t from-void/80 via-void/10 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-60"
             />
-            <span className="label-mono absolute left-5 top-5 rounded-full border border-line-strong bg-void/85 px-3 py-1.5 text-[0.56rem] text-paper backdrop-blur-md">
-              {project.tag}
-            </span>
+            <div className="absolute left-5 top-5 flex flex-wrap items-center gap-2">
+              <span className="label-mono rounded-full border border-line-strong bg-void/85 px-3 py-1.5 text-[0.56rem] text-paper backdrop-blur-md">
+                {project.tag}
+              </span>
+              {isOwnProduct(project) && (
+                <span className="label-mono rounded-full border border-signal bg-signal px-3 py-1.5 text-[0.56rem] text-paper backdrop-blur-md">
+                  OUR PRODUCT
+                </span>
+              )}
+            </div>
           </div>
         </div>
 
         <div className={flip ? "lg:order-1 lg:col-span-5 xl:col-span-4" : "lg:col-span-5 xl:col-span-4"}>
           <span className="label-mono text-[0.62rem] text-muted/70">
             {String(index + 1).padStart(2, "0")} · {project.category}
+            {isOwnProduct(project) && (
+              <span className="text-signal"> · BUILT &amp; OWNED BY ZAINA</span>
+            )}
           </span>
           <h3 className="mt-3 font-display text-[clamp(1.75rem,3.2vw,2.6rem)] font-medium leading-[1.08] tracking-[-0.02em]">
             {project.title}
@@ -121,6 +131,11 @@ function MiniCard({ project, delay }: { project: Project; delay: number }) {
             aria-hidden
             className="absolute inset-0 bg-gradient-to-t from-void via-void/55 to-void/10"
           />
+          {isOwnProduct(project) && (
+            <span className="label-mono absolute left-4 top-4 rounded-full border border-signal bg-signal px-2.5 py-1 text-[0.5rem] text-paper backdrop-blur-md">
+              OUR PRODUCT
+            </span>
+          )}
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
             <div>
               <span className="label-mono text-[0.54rem] text-paper/60">{project.tag}</span>

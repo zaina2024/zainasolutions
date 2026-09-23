@@ -1,5 +1,11 @@
 export type Category = "Websites" | "Products" | "Branding" | "UI/UX";
 
+/**
+ * "client"  - built for a paying client
+ * "product" - Zaina's own product, built and owned in-house
+ */
+export type Ownership = "client" | "product";
+
 export type CaseSection = { heading: string; body: string };
 
 export type Project = {
@@ -15,6 +21,8 @@ export type Project = {
   url?: string;
 
   /* ---------- case study ---------- */
+  /** Client work vs Zaina's own product. Defaults to client work. */
+  ownership?: Ownership;
   /** Client / sector line shown under the title. */
   client: string;
   sector: string;
@@ -358,7 +366,8 @@ export const PROJECTS: Project[] = [
     cover: 33,
     pages: [31, 32, 33, 34],
     url: "https://gobeyondgym.com",
-    client: "Go Beyond Gym (Zaina product)",
+    ownership: "product",
+    client: "Zaina Solutions - in-house product",
     sector: "Fitness SaaS",
     year: "2026",
     scope: "Multi-tenant SaaS platform",
@@ -605,6 +614,8 @@ export const CATEGORIES: Category[] = ["Websites", "Products", "Branding", "UI/U
 export const img = (pg: number) => `/work/pg-${String(pg).padStart(2, "0")}.webp`;
 export const coverOf = (p: Project) => p.srcs?.[0] ?? img(p.cover ?? 0);
 export const pagesOf = (p: Project) => p.srcs ?? (p.pages ?? []).map(img);
+
+export const isOwnProduct = (p: Project) => p.ownership === "product";
 
 export function getProject(slug: string) {
   return PROJECTS.find((p) => p.slug === slug);
