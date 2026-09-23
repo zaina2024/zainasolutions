@@ -4,6 +4,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { CountUp } from "@/components/ui/CountUp";
 import { Reveal } from "@/components/ui/Reveal";
+import { ClientLogos } from "@/components/sections/ClientLogos";
 import { VIEWPORT_ONCE } from "@/lib/motion";
 
 const STATS = [
@@ -58,6 +59,8 @@ export function Stats() {
             </div>
           ))}
         </dl>
+
+        <ClientLogos />
       </div>
     </section>
   );
