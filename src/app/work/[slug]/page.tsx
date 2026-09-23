@@ -9,6 +9,7 @@ import { Footer } from "@/components/site/Footer";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
 import { Reveal } from "@/components/ui/Reveal";
 import { PillButton } from "@/components/ui/PillButton";
+import { ProductBadge } from "@/components/ui/ProductBadge";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import {
   PROJECTS,
@@ -162,11 +163,7 @@ export default async function CaseStudyPage({
                   <span className="label-mono rounded-full border border-signal/40 px-2.5 py-1 text-[0.54rem] text-signal">
                     {project.tag}
                   </span>
-                  {isOwnProduct(project) && (
-                    <span className="label-mono rounded-full border border-signal bg-signal px-2.5 py-1 text-[0.54rem] text-paper">
-                      OUR PRODUCT
-                    </span>
-                  )}
+                  {isOwnProduct(project) && <ProductBadge />}
                 </div>
               </Reveal>
               <Reveal delay={0.1}>

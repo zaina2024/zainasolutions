@@ -9,6 +9,7 @@ import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
 import { MaskText } from "@/components/ui/MaskText";
 import { PillButton } from "@/components/ui/PillButton";
+import { ProductBadge } from "@/components/ui/ProductBadge";
 import { EASE_OUT, VIEWPORT_ONCE } from "@/lib/motion";
 import { PROJECTS, coverOf, isOwnProduct, type Project } from "@/lib/projects";
 
@@ -67,11 +68,7 @@ function FeatureRow({ project, index }: { project: Project; index: number }) {
               <span className="label-mono rounded-full border border-line-strong bg-void/85 px-3 py-1.5 text-[0.56rem] text-paper backdrop-blur-md">
                 {project.tag}
               </span>
-              {isOwnProduct(project) && (
-                <span className="label-mono rounded-full border border-signal bg-signal px-3 py-1.5 text-[0.56rem] text-paper backdrop-blur-md">
-                  OUR PRODUCT
-                </span>
-              )}
+              {isOwnProduct(project) && <ProductBadge />}
             </div>
           </div>
         </div>
@@ -132,9 +129,7 @@ function MiniCard({ project, delay }: { project: Project; delay: number }) {
             className="absolute inset-0 bg-gradient-to-t from-void via-void/55 to-void/10"
           />
           {isOwnProduct(project) && (
-            <span className="label-mono absolute left-4 top-4 rounded-full border border-signal bg-signal px-2.5 py-1 text-[0.5rem] text-paper backdrop-blur-md">
-              OUR PRODUCT
-            </span>
+            <ProductBadge size="sm" className="absolute left-4 top-4" />
           )}
           <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 p-4">
             <div>

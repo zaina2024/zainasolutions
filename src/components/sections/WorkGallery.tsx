@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { SectionLabel } from "@/components/ui/SectionLabel";
 import { Reveal } from "@/components/ui/Reveal";
+import { ProductBadge } from "@/components/ui/ProductBadge";
 import { cn } from "@/lib/utils";
 import { PROJECTS, coverOf, isOwnProduct, type Category } from "@/lib/projects";
 
@@ -135,11 +136,7 @@ export function WorkGallery() {
                     <span className="label-mono rounded-full border border-line-strong bg-void/85 px-3 py-1.5 text-[0.54rem] text-paper backdrop-blur-md">
                       {p.tag}
                     </span>
-                    {isOwnProduct(p) && (
-                      <span className="label-mono rounded-full border border-signal bg-signal px-3 py-1.5 text-[0.54rem] text-paper backdrop-blur-md">
-                        OUR PRODUCT
-                      </span>
-                    )}
+                    {isOwnProduct(p) && <ProductBadge />}
                   </div>
                   <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-5 sm:p-7">
                     <div>
