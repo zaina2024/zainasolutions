@@ -5,7 +5,7 @@ import { Reveal } from "@/components/ui/Reveal";
 const SOCIALS = [
   { name: "instagram", label: "Instagram", href: "https://www.instagram.com/zainasolutions" },
   { name: "linkedin", label: "LinkedIn", href: "https://www.linkedin.com/company/thezainasolution/" },
-  { name: "facebook", label: "Facebook", href: "https://www.facebook.com/people/Zaina-Solutions/61568530567019/" },
+  { name: "facebook", label: "Facebook", href: "https://www.facebook.com/profile.php?id=61594265745892" },
 ];
 
 const EXPLORE = [

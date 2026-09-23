@@ -106,7 +106,7 @@ const JSON_LD = {
   sameAs: [
     "https://www.instagram.com/zainasolutions",
     "https://www.linkedin.com/company/thezainasolution/",
-    "https://www.facebook.com/people/Zaina-Solutions/61568530567019/",
+    "https://www.facebook.com/profile.php?id=61594265745892",
   ],
   knowsAbout: [
     "Website Development",
