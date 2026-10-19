@@ -421,21 +421,20 @@ export const PROJECTS: Project[] = [
   {
     slug: "mis-vector",
     title: "MIS Vector",
-    category: "Products",
+    category: "Software",
     tag: "AI Data Platform",
     blurb:
       "AI data analysis for businesses - upload spreadsheets or connect an API, and get dashboards, reports and reconciliations in minutes.",
     srcs: ["/work/mis-vector-1.webp", "/work/mis-vector-2.webp", "/work/mis-vector-3.webp"],
     url: "https://misvector.com/",
-    ownership: "product",
-    client: "Zaina Solutions - in-house product",
+    client: "MIS Data Automate",
     sector: "Business intelligence SaaS",
     year: "2026",
     scope: "AI data-analysis platform",
     services: ["MVP Development", "UI/UX Design"],
     stack: ["React", "Vite", "Tailwind CSS", "AI analysis"],
     overview:
-      "Most small businesses report from spreadsheets: someone exports the data, pastes it into another sheet, reconciles it by hand and rebuilds the same report every month. MIS Vector is our product for taking that job off their desk.",
+      "Most small businesses report from spreadsheets: someone exports the data, pastes it into another sheet, reconciles it by hand and rebuilds the same report every month. MIS Vector, built for MIS Data Automate, takes that job off their desk.",
     sections: [
       {
         heading: "The challenge",
@@ -461,7 +460,7 @@ export const PROJECTS: Project[] = [
     ],
     metaTitle: "MIS Vector - AI Data Analysis Platform Case Study",
     metaDescription:
-      "How Zaina Solutions built MIS Vector, an AI data-analysis platform that turns spreadsheets, Tally exports and APIs into dashboards, reports and reconciliations.",
+      "How Zaina Solutions built MIS Vector for MIS Data Automate - an AI data-analysis platform that turns spreadsheets, Tally exports and APIs into dashboards, reports and reconciliations.",
     keywords: [
       "AI data analysis tool",
       "MIS reporting software",
@@ -689,8 +688,7 @@ export const PROJECTS: Project[] = [
     tag: "SaaS Platform",
     blurb:
       "An all-in-one gym management platform that replaces manual tracking with one easy system.",
-    cover: 33,
-    pages: [31, 32, 33, 34],
+    srcs: ["/work/gobeyond-1.webp", "/work/gobeyond-2.webp", "/work/gobeyond-3.webp"],
     url: "https://gobeyondgym.com",
     ownership: "product",
     client: "Zaina Solutions - in-house product",
