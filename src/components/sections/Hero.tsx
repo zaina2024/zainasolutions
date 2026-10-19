@@ -7,7 +7,7 @@ import {
   useReducedMotion,
 } from "motion/react";
 import { useRef } from "react";
-import { EcosystemOrbit } from "@/components/site/EcosystemOrbit";
+import { ArtifactMachine } from "@/components/site/ArtifactMachine";
 import { PillButton } from "@/components/ui/PillButton";
 import { MaskText } from "@/components/ui/MaskText";
 import { useIntroReady } from "@/components/site/Intro";
@@ -112,7 +112,7 @@ export function Hero() {
         </motion.div>
 
         <motion.div style={{ y: visualY }} className="relative">
-          <EcosystemOrbit ready={ready} />
+          <ArtifactMachine ready={ready} />
         </motion.div>
       </div>
 
