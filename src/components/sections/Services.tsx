@@ -45,7 +45,7 @@ const SERVICES: Service[] = [
     title: "App Development",
     desc: "Native iOS & Android, built to ship.",
     icon: Smartphone,
-    href: "/work#products",
+    href: "/work#software",
     span: "lg:col-span-2 lg:col-start-3 lg:row-start-1",
   },
   {

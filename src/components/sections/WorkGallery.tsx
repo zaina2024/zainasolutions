@@ -11,16 +11,17 @@ import { ProductBadge } from "@/components/ui/ProductBadge";
 import { cn } from "@/lib/utils";
 import { PROJECTS, coverOf, isOwnProduct, type Category } from "@/lib/projects";
 
-const TABS = ["All", "Websites", "Products", "Branding", "UI/UX"] as const;
+const TABS = ["All", "Websites", "Software", "Products", "Branding", "UI/UX"] as const;
 type Tab = (typeof TABS)[number];
 
 export function WorkGallery() {
   const [cat, setCat] = useState<Tab>("All");
 
-  // Deep links from the Services section: /work#websites, #products, #branding, #uiux
+  // Deep links from the Services section: /work#websites, #software, #products, #branding, #uiux
   useEffect(() => {
     const map: Record<string, Tab> = {
       websites: "Websites",
+      software: "Software",
       products: "Products",
       branding: "Branding",
       uiux: "UI/UX",

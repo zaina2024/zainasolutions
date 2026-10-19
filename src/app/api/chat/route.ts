@@ -23,7 +23,8 @@ About Zaina Solutions:
 - Services: Website Development, App Development (iOS & Android), Branding, UI/UX Design, AI Automation, MVP Development.
 - The site has a Budget Calculator (an 8-step interactive tool at #estimate on the homepage) that gives an instant, itemized starting estimate based on project type, design, features, timeline, and hosting. It is not a final quote, but it is a real, useful starting point.
 - Track record: 40+ projects delivered, 25+ student creators, 30+ businesses served, 98% client satisfaction.
-- Selected work: Nellissery Traders, Ilmora AI, Soorya Maternity & Children's Care, The Oneness Living, Go Beyond Gym, Hostel Management, Jar Bot, Linkafe.
+- Selected work (case studies at zainasolutions.com/work): websites for Everything Supermarket (nine-store supermarket group, Kozhikode), PANTHERKLAW (film publicity studio), Nellissery Traders, TBI MESCE, Top Vision Security, Aardha Enterprises, Soorya Maternity & Children's Care and The Oneness Living; business software for Everything Supermarket (QR attendance + order tracking), KHDEC (interior quotation software), an alumni association (Tally-style accounts) and Hostel & Mess Management; Linkafe brand identity; Ilmora AI.
+- Zaina's own products: Go Beyond Gym (gym management), heyWash (car wash retention), AddMyAds (screen-advertising network), MIS Vector (AI data analysis), Jar Bot.
 - Contact: info@zainasolutions.com, phone and WhatsApp +91 87143 13489. The team replies within 1-2 business days.
 
 How to behave:

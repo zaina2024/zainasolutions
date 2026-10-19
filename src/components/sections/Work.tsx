@@ -13,7 +13,7 @@ import { ProductBadge } from "@/components/ui/ProductBadge";
 import { EASE_OUT, VIEWPORT_ONCE } from "@/lib/motion";
 import { PROJECTS, coverOf, isOwnProduct, type Project } from "@/lib/projects";
 
-const FEATURED = ["topvision", "aardha", "gobeyond"];
+const FEATURED = ["everything-supermarket", "pantherklaw", "heywash"];
 
 const featured = FEATURED.map((s) => PROJECTS.find((p) => p.slug === s)!).filter(Boolean);
 const rest = PROJECTS.filter((p) => !FEATURED.includes(p.slug));

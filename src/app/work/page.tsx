@@ -9,7 +9,7 @@ import { PROJECTS, coverOf } from "@/lib/projects";
 export const metadata: Metadata = {
   title: "Selected Work & Case Studies",
   description:
-    "Case studies from Zaina Solutions - websites, SaaS platforms and brand identities built for businesses in Kerala, India and the Gulf. Including Top Vision Security, Aardha Enterprises, Go Beyond Gym and Linkafe.",
+    "Case studies from Zaina Solutions - websites, business software, SaaS platforms and brand identities built for businesses in Kerala, India and the Gulf. Including Everything Supermarket, PANTHERKLAW, Top Vision Security, heyWash and Go Beyond Gym.",
   keywords: [
     "web design portfolio India",
     "website case studies",
