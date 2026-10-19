@@ -15,12 +15,14 @@ function Logo({ client }: { client: Client }) {
       sizes="220px"
       style={client.scale ? { transform: `scale(${client.scale})` } : undefined}
       /* Logos arrive in mixed colours; normalise to the dark UI, restore on hover. */
-      className="max-h-10 w-auto max-w-[9rem] object-contain opacity-55 brightness-0 invert transition-[opacity,filter] duration-500 group-hover:opacity-100 group-hover:brightness-100 group-hover:invert-0 sm:max-h-12 sm:max-w-[11rem]"
+      className={`max-h-10 w-auto max-w-[9rem] object-contain opacity-55 brightness-0 invert transition-[opacity,filter] duration-500 group-hover:opacity-100 sm:max-h-12 sm:max-w-[11rem] ${
+        client.mono ? "" : "group-hover:brightness-100 group-hover:invert-0"
+      }`}
     />
   );
 
   return (
-    <li className="group flex items-center justify-center">
+    <li className="group flex w-[42%] items-center justify-center sm:w-[28%] lg:w-[17%]">
       {client.slug ? (
         <Link
           href={`/work/${client.slug}`}
@@ -46,7 +48,8 @@ export function ClientLogos() {
           <p className="label-mono text-[0.62rem]">TRUSTED BY</p>
           <span aria-hidden className="h-px flex-1 bg-line" />
         </div>
-        <ul className="mt-8 grid grid-cols-2 items-center gap-x-8 gap-y-10 sm:grid-cols-3 lg:grid-cols-5">
+        {/* Centred wrap so a short last row sits in the middle instead of hugging the left edge. */}
+        <ul className="mt-8 flex flex-wrap items-center justify-center gap-x-[4%] gap-y-10 lg:gap-x-[3%]">
           {CLIENTS.map((c) => (
             <Logo key={c.name} client={c} />
           ))}
