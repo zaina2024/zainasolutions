@@ -322,7 +322,7 @@ export const PROJECTS: Project[] = [
       "/work/tbi-mesce-2.webp",
       "/work/tbi-mesce-3.webp",
     ],
-    url: "https://tbi-mesce.vercel.app/",
+    url: "https://tbimesce.in/",
     client: "TBI MESCE - Technology Business Incubator",
     sector: "Startup incubation · Kuttippuram",
     year: "2026",
