@@ -30,5 +30,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
       images: [`${SITE}/work/opengraph-image`],
     },
     ...caseStudies,
+    {
+      url: `${SITE}/privacy`,
+      lastModified,
+      changeFrequency: "yearly",
+      priority: 0.2,
+    },
   ];
 }

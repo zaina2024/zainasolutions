@@ -127,6 +127,9 @@ export function Footer() {
         <Reveal y={12} delay={0.1}>
           <div className="mt-16 flex flex-col gap-2 border-t border-line pt-7 font-mono text-[0.7rem] uppercase tracking-wider text-muted sm:flex-row sm:items-center sm:justify-between">
             <span>© 2026 Zaina Innovators LLP · All Rights Reserved</span>
+            <a href="/privacy" className="transition-colors hover:text-paper">
+              Privacy Policy
+            </a>
             <span>Zaina Solutions™ is a subsidiary of Zaina Innovators LLP</span>
           </div>
         </Reveal>
