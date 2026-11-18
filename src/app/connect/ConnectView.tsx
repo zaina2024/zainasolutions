@@ -76,7 +76,7 @@ const RED_GRADIENT = "linear-gradient(135deg, #B82E2E 0%, #E0473B 55%, #FF6B4A 1
 
 function Mark({
   className,
-  floor = "#e0473b",
+  floor = "#f4f2ee",
   gap = "#050505",
 }: {
   className?: string;
