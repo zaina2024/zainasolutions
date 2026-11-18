@@ -9,7 +9,6 @@ import {
   useMotionValue,
   useReducedMotion,
   useSpring,
-  useTransform,
   type Variants,
 } from "motion/react";
 import {
@@ -20,9 +19,10 @@ import {
   Globe,
   Mail,
   Phone,
-  RotateCw,
+  QrCode,
   Share2,
   UserPlus,
+  X,
 } from "lucide-react";
 import {
   useCallback,
@@ -65,8 +65,6 @@ async function copyText(text: string) {
     return ok;
   }
 }
-
-const clamp = (v: number, min: number, max: number) => Math.min(max, Math.max(min, v));
 
 const RED_GRADIENT = "linear-gradient(135deg, #B82E2E 0%, #E0473B 55%, #FF6B4A 100%)";
 
@@ -298,16 +296,18 @@ function RowItem({
 
 export function ConnectView() {
   const reduce = useReducedMotion();
-  const [flipped, setFlipped] = useState(false);
+  const [qrOpen, setQrOpen] = useState(false);
   const [saved, setSaved] = useState(false);
   const [rings, setRings] = useState(true);
   const [toast, setToast] = useState<{ id: number; text: string } | null>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
   const savedTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const qrButtonRef = useRef<HTMLButtonElement>(null);
+  const qrCloseRef = useRef<HTMLButtonElement>(null);
 
   /* background spotlight follows the finger / cursor */
   const bx = useMotionValue(50);
-  const by = useMotionValue(22);
+  const by = useMotionValue(18);
   const sbx = useSpring(bx, { stiffness: 50, damping: 20 });
   const sby = useSpring(by, { stiffness: 50, damping: 20 });
   const bloom = useMotionTemplate`radial-gradient(560px circle at ${sbx}% ${sby}%, rgba(224,71,59,0.17), rgba(224,71,59,0.05) 38%, transparent 62%)`;
@@ -326,43 +326,6 @@ export function ConnectView() {
     };
   }, [reduce, bx, by]);
 
-  /* card tilt: pointer on desktop, phone tilt on Android */
-  const px = useMotionValue(0);
-  const py = useMotionValue(0);
-  const spx = useSpring(px, { stiffness: 140, damping: 16 });
-  const spy = useSpring(py, { stiffness: 140, damping: 16 });
-  const rotateY = useTransform(spx, (v) => v * 18);
-  const rotateX = useTransform(spy, (v) => -v * 18);
-  const sheenX = useTransform(spx, (v) => 50 + v * 120);
-  const sheenY = useTransform(spy, (v) => 50 + v * 120);
-  const sheen = useMotionTemplate`radial-gradient(380px circle at ${sheenX}% ${sheenY}%, rgba(255,255,255,0.13), transparent 50%)`;
-
-  function onCardMove(e: ReactPointerEvent<HTMLElement>) {
-    if (reduce) return;
-    const r = e.currentTarget.getBoundingClientRect();
-    px.set(clamp((e.clientX - r.left) / r.width - 0.5, -0.5, 0.5));
-    py.set(clamp((e.clientY - r.top) / r.height - 0.5, -0.5, 0.5));
-  }
-  function onCardLeave() {
-    px.set(0);
-    py.set(0);
-  }
-
-  useEffect(() => {
-    if (reduce || typeof window === "undefined" || !("DeviceOrientationEvent" in window)) return;
-    // iOS needs a permission prompt for motion; a stranger's first tap is the
-    // wrong moment for that, so tilt is Android-only and pointer elsewhere.
-    const DOE = window.DeviceOrientationEvent as unknown as { requestPermission?: unknown };
-    if (typeof DOE.requestPermission === "function") return;
-    function onTilt(e: DeviceOrientationEvent) {
-      if (e.gamma == null || e.beta == null) return;
-      px.set(clamp(e.gamma / 45, -0.5, 0.5));
-      py.set(clamp((e.beta - 50) / 45, -0.5, 0.5));
-    }
-    window.addEventListener("deviceorientation", onTilt);
-    return () => window.removeEventListener("deviceorientation", onTilt);
-  }, [reduce, px, py]);
-
   const showToast = useCallback((text: string) => {
     clearTimeout(toastTimer.current);
     setToast({ id: Date.now(), text });
@@ -376,6 +339,37 @@ export function ConnectView() {
     },
     []
   );
+
+  /* QR sheet: lock scroll, focus the close button, Escape closes */
+  useEffect(() => {
+    if (!qrOpen) return;
+    qrCloseRef.current?.focus();
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    function onKey(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        setQrOpen(false);
+        qrButtonRef.current?.focus();
+      } else if (e.key === "Tab") {
+        e.preventDefault();
+        qrCloseRef.current?.focus();
+      }
+    }
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prev;
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [qrOpen]);
+
+  function openQr() {
+    tick(10);
+    setQrOpen(true);
+  }
+  function closeQr() {
+    setQrOpen(false);
+    qrButtonRef.current?.focus();
+  }
 
   async function onCopy(c: NonNullable<Row["copy"]>) {
     tick(10);
@@ -407,15 +401,10 @@ export function ConnectView() {
     savedTimer.current = setTimeout(() => setSaved(false), 3200);
   }
 
-  function onFlip() {
-    tick(10);
-    setFlipped((f) => !f);
-  }
-
   /* entrance choreography */
   const list: Variants = {
     hidden: {},
-    show: { transition: { staggerChildren: 0.05, delayChildren: reduce ? 0 : 0.45 } },
+    show: { transition: { staggerChildren: 0.05, delayChildren: reduce ? 0 : 0.2 } },
   };
   const group: Variants = {
     hidden: { opacity: 0, y: reduce ? 0 : 14 },
@@ -430,10 +419,17 @@ export function ConnectView() {
     show: { opacity: 1, y: 0, transition: { type: "spring", stiffness: 170, damping: 22 } },
   };
 
-  const face = {
-    backfaceVisibility: "hidden",
-    WebkitBackfaceVisibility: "hidden",
-  } as const;
+  const qrSvg = (
+    <svg
+      viewBox={`-3 -3 ${CONNECT_QR.size + 6} ${CONNECT_QR.size + 6}`}
+      shapeRendering="crispEdges"
+      className="block aspect-square w-full"
+      role="img"
+      aria-label="QR code for zainasolutions.com/connect"
+    >
+      <path d={CONNECT_QR.path} fill="#050505" />
+    </svg>
+  );
 
   return (
     <main className="relative min-h-[100svh] overflow-x-clip">
@@ -466,158 +462,67 @@ export function ConnectView() {
           </button>
         </motion.header>
 
-        {/* the card */}
-        <div className="relative mt-5" style={{ perspective: 1100 }}>
-          {!reduce &&
-            rings &&
-            [0, 1, 2].map((i) => (
-              <motion.span
-                key={i}
-                aria-hidden
-                className="pointer-events-none absolute left-1/2 top-1/2 -ml-[50%] -mt-[50%] aspect-square w-full rounded-full border border-signal/60"
-                initial={{ scale: 0.25, opacity: 0.7 }}
-                animate={{ scale: 1.5, opacity: 0 }}
-                transition={{ duration: 1.5, delay: 0.05 + i * 0.2, ease: [0.16, 1, 0.3, 1] }}
-                onAnimationComplete={i === 2 ? () => setRings(false) : undefined}
-              />
-            ))}
-
-          <motion.div
-            initial={reduce ? { opacity: 0 } : { opacity: 0, y: 30, rotateX: 24, scale: 0.94 }}
-            animate={{ opacity: 1, y: 0, rotateX: 0, scale: 1 }}
-            transition={{ type: "spring", stiffness: 85, damping: 15, delay: 0.12 }}
-            style={{ transformStyle: "preserve-3d" }}
-          >
-            <motion.button
-              type="button"
-              onClick={onFlip}
-              onPointerMove={onCardMove}
-              onPointerLeave={onCardLeave}
-              aria-label={flipped ? "Show the front of the card" : "Show a QR code for this page"}
-              aria-pressed={flipped}
-              className="relative block aspect-[1.586/1] w-full cursor-pointer rounded-[20px] outline-none focus-visible:ring-2 focus-visible:ring-signal focus-visible:ring-offset-4 focus-visible:ring-offset-void"
-              style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-              whileTap={reduce ? undefined : { scale: 0.97 }}
-            >
-              <motion.div
-                className="absolute inset-0"
-                style={{ transformStyle: "preserve-3d" }}
-                initial={false}
-                animate={{ rotateY: flipped ? 180 : 0 }}
-                transition={reduce ? { duration: 0 } : { type: "spring", stiffness: 110, damping: 15 }}
-              >
-                {/* front */}
-                <div
-                  aria-hidden={flipped}
-                  className="absolute inset-0 overflow-hidden rounded-[20px] border border-white/10 bg-[#0d0d10] shadow-[0_30px_60px_-24px_rgba(0,0,0,0.9),0_0_90px_-30px_rgba(242,87,74,0.45)]"
-                  style={face}
-                >
-                  <div
-                    aria-hidden
-                    className="absolute inset-0"
-                    style={{
-                      background:
-                        "radial-gradient(130% 100% at 100% 100%, rgba(224,71,59,0.36), transparent 56%), radial-gradient(90% 70% at 0% 0%, rgba(255,255,255,0.05), transparent 60%)",
-                    }}
-                  />
-                  <Mark
-                    floor="#f4f2ee"
-                    gap="#0d0d10"
-                    className="absolute -right-[8%] top-1/2 h-[118%] w-auto -translate-y-1/2 opacity-[0.04]"
-                  />
-                  <div aria-hidden className="grain absolute inset-0" />
-                  <motion.div aria-hidden className="absolute inset-0" style={{ background: sheen }} />
-
-                  <div className="relative flex h-full flex-col justify-between p-5 text-left">
-                    <div className="flex items-start justify-between">
-                      <Mark gap="#0d0d10" className="h-6 w-auto" />
-                      <Contactless className="size-7 text-signal-lit" />
-                    </div>
-                    <div className="flex items-end justify-between gap-3">
-                      <div className="flex min-w-0 items-center gap-3.5">
-                        <div className="relative size-[60px] shrink-0 overflow-hidden rounded-full ring-1 ring-white/15">
-                          <Image
-                            src="/connect/shifal.jpg"
-                            alt=""
-                            fill
-                            sizes="60px"
-                            priority
-                            unoptimized
-                            className="object-cover"
-                          />
-                        </div>
-                        <div className="min-w-0">
-                          <p className="font-display text-[21px] font-semibold leading-[1.08] text-paper [word-spacing:0.12em]">
-                            {P.name}
-                          </p>
-                          <p className="mt-1 text-[13px] leading-tight text-paper/65">{P.role}</p>
-                        </div>
-                      </div>
-                      <span className="mb-0.5 flex shrink-0 items-center gap-1 font-mono text-[9px] uppercase tracking-[0.18em] text-paper/45">
-                        <RotateCw className="size-3" aria-hidden />
-                        QR
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* back */}
-                <div
-                  aria-hidden={!flipped}
-                  className="absolute inset-0 overflow-hidden rounded-[20px] shadow-[0_30px_60px_-24px_rgba(0,0,0,0.9)]"
-                  style={{ ...face, transform: "rotateY(180deg)", background: RED_GRADIENT }}
-                >
-                  <div aria-hidden className="grain absolute inset-0" />
-                  <motion.div aria-hidden className="absolute inset-0" style={{ background: sheen }} />
-                  <div className="relative flex h-full items-stretch gap-3.5 p-3.5 text-left">
-                    <div className="aspect-square h-full overflow-hidden rounded-[14px] bg-paper">
-                      <svg
-                        viewBox={`-3 -3 ${CONNECT_QR.size + 6} ${CONNECT_QR.size + 6}`}
-                        shapeRendering="crispEdges"
-                        className="block size-full"
-                        role="img"
-                        aria-label="QR code for zainasolutions.com/connect"
-                      >
-                        <path d={CONNECT_QR.path} fill="#050505" />
-                      </svg>
-                    </div>
-                    <div className="flex min-w-0 flex-1 flex-col justify-between py-1">
-                      <Mark floor="#f4f2ee" gap="#d9443a" className="h-5 w-auto self-start" />
-                      <div>
-                        <p className="font-display text-[20px] font-semibold leading-[1.05] text-paper [word-spacing:0.12em]">
-                          Scan to
-                          <br />
-                          connect
-                        </p>
-                        <p className="mt-2 font-mono text-[min(10px,2.7vw)] leading-[1.45] text-paper/85">
-                          zainasolutions.com
-                          <br />
-                          /connect
-                        </p>
-                      </div>
-                      <span className="flex items-center gap-1 font-mono text-[9px] uppercase tracking-[0.18em] text-paper/70">
-                        <RotateCw className="size-3" aria-hidden />
-                        Front
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </motion.button>
-          </motion.div>
-        </div>
-
-        {/* everything below the card */}
         <motion.div variants={list} initial="hidden" animate="show">
-          <motion.p variants={item} className="mt-5 text-center text-[15px] leading-snug text-paper/70">
-            {P.tagline}
-          </motion.p>
+          {/* profile */}
+          <section className="mt-8 flex flex-col items-center text-center">
+            <div className="relative">
+              {!reduce &&
+                rings &&
+                [0, 1, 2].map((i) => (
+                  <motion.span
+                    key={i}
+                    aria-hidden
+                    className="pointer-events-none absolute inset-0 rounded-full border border-signal/60"
+                    initial={{ scale: 1, opacity: 0.7 }}
+                    animate={{ scale: 2.4, opacity: 0 }}
+                    transition={{ duration: 1.6, delay: 0.15 + i * 0.22, ease: [0.16, 1, 0.3, 1] }}
+                    onAnimationComplete={i === 2 ? () => setRings(false) : undefined}
+                  />
+                ))}
+              <motion.div
+                initial={reduce ? { opacity: 0 } : { opacity: 0, scale: 0.85 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ type: "spring", stiffness: 160, damping: 16, delay: 0.05 }}
+                className="relative size-[104px] overflow-hidden rounded-full shadow-[0_0_60px_-12px_rgba(242,87,74,0.6)] ring-1 ring-white/15"
+              >
+                <Image
+                  src="/connect/shifal.jpg"
+                  alt=""
+                  fill
+                  sizes="104px"
+                  priority
+                  unoptimized
+                  className="object-cover"
+                />
+              </motion.div>
+              <span
+                aria-hidden
+                className="absolute -bottom-0.5 -right-0.5 grid size-8 place-items-center rounded-full border-[3px] border-[#0b0b0d] text-paper"
+                style={{ background: RED_GRADIENT }}
+              >
+                <Contactless className="size-4" />
+              </span>
+            </div>
+            <motion.h1
+              variants={item}
+              className="mt-5 font-display text-[28px] font-semibold leading-[1.05] text-paper [word-spacing:0.12em]"
+            >
+              {P.name}
+            </motion.h1>
+            <motion.p variants={item} className="mt-2 text-[15px] leading-snug text-paper/70">
+              {P.role}
+            </motion.p>
+            <motion.p variants={item} className="mt-1.5 text-[14px] leading-snug text-signal-lit">
+              {P.tagline}
+            </motion.p>
+          </section>
 
-          <motion.div variants={item} className="mt-5">
+          {/* primary actions */}
+          <motion.div variants={item} className="mt-7 flex gap-2.5">
             <a
               href={P.vcardPath}
               onClick={onSave}
-              className="group relative flex h-14 w-full items-center justify-center overflow-hidden rounded-2xl text-[16px] font-medium text-paper shadow-glow outline-none transition-transform focus-visible:ring-2 focus-visible:ring-paper/70 focus-visible:ring-offset-2 focus-visible:ring-offset-void active:scale-[0.98]"
+              className="group relative flex h-14 min-w-0 flex-1 items-center justify-center overflow-hidden rounded-2xl text-[16px] font-medium text-paper shadow-glow outline-none transition-transform focus-visible:ring-2 focus-visible:ring-paper/70 focus-visible:ring-offset-2 focus-visible:ring-offset-void active:scale-[0.98]"
               style={{ background: RED_GRADIENT }}
             >
               <span
@@ -652,6 +557,17 @@ export function ConnectView() {
                 )}
               </AnimatePresence>
             </a>
+            <button
+              ref={qrButtonRef}
+              type="button"
+              onClick={openQr}
+              aria-haspopup="dialog"
+              aria-label="Show QR code"
+              className="flex h-14 shrink-0 items-center gap-2 rounded-2xl border border-line-strong bg-white/[0.04] px-4 text-[15px] font-medium text-paper outline-none transition hover:bg-white/[0.07] focus-visible:border-signal active:scale-95"
+            >
+              <QrCode className="size-5" strokeWidth={1.8} aria-hidden />
+              QR
+            </button>
           </motion.div>
 
           <motion.p variants={item} className="label-mono mb-2.5 mt-8 px-1">
@@ -692,6 +608,63 @@ export function ConnectView() {
           </motion.footer>
         </motion.div>
       </div>
+
+      {/* QR sheet, for phones without NFC */}
+      <AnimatePresence>
+        {qrOpen && (
+          <motion.div
+            key="qr"
+            className="fixed inset-0 z-50 flex items-end justify-center sm:items-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+          >
+            <div aria-hidden className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={closeQr} />
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="zc-qr-title"
+              initial={{ y: reduce ? 0 : 48, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: reduce ? 0 : 48, opacity: 0 }}
+              transition={{ type: "spring", stiffness: 260, damping: 26 }}
+              className="relative w-full max-w-[420px] px-4 pb-[max(16px,env(safe-area-inset-bottom))] sm:pb-0"
+            >
+              <div
+                className="relative overflow-hidden rounded-[24px] p-5 text-center shadow-[0_30px_80px_-20px_rgba(0,0,0,0.9)]"
+                style={{ background: RED_GRADIENT }}
+              >
+                <div aria-hidden className="grain absolute inset-0" />
+                <div className="relative">
+                  <div className="flex items-center justify-between">
+                    <Mark gap="#be3431" className="h-5 w-auto" />
+                    <button
+                      ref={qrCloseRef}
+                      type="button"
+                      onClick={closeQr}
+                      aria-label="Close QR code"
+                      className="grid size-9 place-items-center rounded-full bg-black/15 text-paper outline-none transition hover:bg-black/25 focus-visible:ring-2 focus-visible:ring-paper"
+                    >
+                      <X className="size-[18px]" strokeWidth={2} />
+                    </button>
+                  </div>
+                  <div className="mx-auto mt-4 w-full max-w-[260px] overflow-hidden rounded-2xl bg-paper">
+                    {qrSvg}
+                  </div>
+                  <p
+                    id="zc-qr-title"
+                    className="mt-5 font-display text-[22px] font-semibold leading-tight text-paper [word-spacing:0.12em]"
+                  >
+                    Scan to connect
+                  </p>
+                  <p className="mt-1.5 font-mono text-[11px] text-paper/85">zainasolutions.com/connect</p>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* toast */}
       <div
