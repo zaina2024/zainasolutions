@@ -3,6 +3,7 @@
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { MessageCircle, Phone, Send, X, ArrowUpRight, Calculator } from "lucide-react";
 import { useEffect, useRef, useState, type FormEvent } from "react";
+import { usePathname } from "next/navigation";
 import { SocialIcon } from "@/components/ui/SocialIcon";
 import { SITE_CONTACT } from "@/lib/site";
 import { cn } from "@/lib/utils";
@@ -96,6 +97,7 @@ function TypingDots({ reduce }: { reduce: boolean }) {
 }
 
 export function ChatWidget() {
+  const pathname = usePathname();
   const reduce = useReducedMotion();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([GREETING]);
@@ -216,6 +218,9 @@ export function ChatWidget() {
   }
 
   const showQuickPrompts = messages.length === 1 && !busy;
+
+  // The NFC card page is a single-purpose contact sheet; keep it uncluttered.
+  if (pathname?.startsWith("/connect")) return null;
 
   return (
     <>

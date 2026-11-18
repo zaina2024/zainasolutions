@@ -181,6 +181,26 @@ body {
   }
 }
 
+/* /connect: NFC card page */
+@keyframes zc-arc {
+  0%,
+  100% {
+    opacity: 0.28;
+  }
+  40% {
+    opacity: 1;
+  }
+}
+@keyframes zc-shine {
+  0% {
+    transform: translateX(-120%) skewX(-20deg);
+  }
+  55%,
+  100% {
+    transform: translateX(330%) skewX(-20deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
